@@ -1,68 +1,44 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import { SocketIOConnection } from '@slate-collaborative/backend';
-import mongoRouter from './database/router.js';
-import { MongoClient } from 'mongodb';
+import 'dotenv/config'
+import express from 'express'
+import cors from 'cors'
+import mongoose from 'mongoose'
+import { SocketIOConnection } from '@slate-collaborative/backend'
+import docsRouter from './routes/kwadoc.js'
+import { redis } from './database/redis.js'
+import { scheduleRedisCron } from './cron/redis.js'
+import { config } from './database/config.js'
+import {
+  onDocumentLoad,
+  onDocumentSave,
+  onAuthRequest
+} from './helpers/socketIO.js'
 
-const app = express();
-let server;
+const app = express()
+scheduleRedisCron(redis)
+mongoose.connect(`${config.mongodb.url}/${config.mongodb.name}`)
 
 const corsOptions = {
   origin: ['http://localhost:3000', 'http://localhost:3001'],
   credentials: true,
   optionSuccessStatus: 200
 }
-app.use(cors(corsOptions));
+
+app.use(cors(corsOptions))
 app.use(express.json())
+app.use('/api/kwadocs', docsRouter)
 
-app.get("/message", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
+const server = app.listen(process.env.PORT, () => {
+  console.log(`Kwado is running at localhost:${process.env.PORT}`)
+})
 
-const url = process.env.MONGO_CONNECTION_URI;
-
-MongoClient.connect(url)
-  .then((client) => {
-    const db = client.db('kwado');
-    const docsCollection = db.collection('kwadocs');
-    const docsRouter = mongoRouter(docsCollection);
-  
-    app.use('/api/kwadocs', docsRouter); // Defining the base route where we can later access our data
-  })
-  .catch(console.err);
-
-server = app.listen(process.env.PORT, () => {
-  console.log(`Kwado is running at localhost:${process.env.PORT}`);
-});
-
-const config = {
+const socketIoConfig = {
   entry: server, // or specify port to start io server
   defaultValue: [],
   saveFrequency: 2000,
-  onAuthRequest: async (query, socket) => {
-    // some query validation
-    return true
-  },
-  onDocumentLoad: async pathname => {
-    try {
-      const documentRes = await fetch(`http://localhost:8000/api/kwadocs${pathname}`)
-      const document = await documentRes.json()
-
-      if (document) {
-        return document.content
-      }
-    }
-    catch(e) {
-      console.log('Document load error', e)
-    }
-
-    return null
-  },
-  onDocumentSave: async (pathname, doc) => {
-    // save document
-  }
+  onAuthRequest,
+  onDocumentLoad,
+  onDocumentSave,
 }
 
-new SocketIOConnection(config);
+new SocketIOConnection(socketIoConfig)
 
