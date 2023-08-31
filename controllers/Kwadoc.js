@@ -36,9 +36,29 @@ class KwadocController {
     }
   }
 
+  async getKwadocBy (prop, value) {
+    try {
+      const kwadoc = await Kwadoc.findOne({ [prop]: value })
+      return kwadoc
+    }
+    catch (e) {
+      handleError(e)
+    }
+  }
+
   async updateKwadoc (id, data) {
     try {
       const kwadoc = await Kwadoc.findOneAndUpdate({ _id: id }, { $set: data })
+      return kwadoc
+    }
+    catch (e) {
+      handleError(e)
+    }
+  }
+
+  async updateKwadocWhere (condition, data) {
+    try {
+      const kwadoc = await Kwadoc.findOneAndUpdate(condition, { $set: data })
       return kwadoc
     }
     catch (e) {
