@@ -24,11 +24,11 @@ const scheduleRedisCron = (redis) => {
       }
   
       if (document) {
-        const id = key.split(DOCUMENT_PREFIX)[1]
+        const slug = key.split(DOCUMENT_PREFIX)[1]
 
         try {
           const controller = new KwadocController()
-          await controller.updateKwadoc(id, {
+          await controller.updateKwadocWhere({ slug }, {
             content: JSON.parse(document.content)
           })
         }
