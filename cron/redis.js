@@ -3,7 +3,7 @@ import { DOCUMENT_PREFIX, getDocumentHash } from '../utils.js'
 import KwadocController from '../controllers/Kwadoc.js'
 
 const scheduleRedisCron = (redis) => {
-  cron.schedule("*/5 * * * * *", async () => {
+  cron.schedule("* */5 * * * *", async () => {
     let allKeys = []
   
     try {
@@ -14,7 +14,6 @@ const scheduleRedisCron = (redis) => {
     }
   
     for (let key of allKeys) {
-      console.log("Backing up document to MongoDB")
       let document
   
       try {
