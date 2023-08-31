@@ -20,10 +20,10 @@ npm install
 
 - Build and run the project
 ```
-npm start
+npm run dev
 ```
 
-- Navigate to `http://localhost:3000`
+- Navigate to `http://localhost:8000`
 
 ## Testing
 -
