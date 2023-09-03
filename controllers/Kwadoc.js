@@ -26,7 +26,7 @@ class KwadocController {
     }
   }
 
-  async getKwadocByID (id) {
+  async getKwadocById (id) {
     try {
       const kwadoc = await Kwadoc.findById(id)
       return kwadoc
