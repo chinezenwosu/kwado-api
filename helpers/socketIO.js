@@ -1,4 +1,4 @@
-import { redis } from '../database/redis.js'
+import redis from '../database/redis.js'
 import { getDocumentHash } from '../utils.js'
 import KwadocController from '../controllers/Kwadoc.js'
 
