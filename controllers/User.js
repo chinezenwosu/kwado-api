@@ -2,14 +2,17 @@ import bcrypt from 'bcrypt'
 import User from '../models/User.js'
 
 const handleError = (e) => {
-  throw new Error(e)
+  return {
+    error: e,
+    code: 500,
+  }
 }
 
 class UserController {
   async getUserById (id) {
     try {
       const user = await User.findById(id)
-      return user
+      return { user }
     }
     catch (e) {
       handleError(e)
@@ -25,13 +28,25 @@ class UserController {
           const match = await bcrypt.compare(password, existingUser.password)
   
           if (match) {
-            return { allowLogin: match, user: existingUser }
+            return {
+              allowLogin: match,
+              user: existingUser,
+            }
           }
-          return { allowLogin: false, error: 'Invalid password' }
+
+          // Invalid password
+          return {
+            allowLogin: false,
+            error: 'Invalid email or password',
+            code: 400,
+          }
         }
+
+        // User with that email does not exist
         return {
           allowLogin: false,
-          error: 'User with that email does not exist.'
+          error: 'Invalid email or password',
+          code: 400,
         }
       }
       catch (e) {
@@ -41,6 +56,7 @@ class UserController {
       return {
         allowLogin: false,
         error: 'Please fill in all the fields.',
+        code: 400,
       }
     }
   }
@@ -71,6 +87,7 @@ class UserController {
           return {
             allowLogin: false,
             error: 'User with that email already exists.',
+            code: 409,
           }
         }
       }
@@ -81,6 +98,7 @@ class UserController {
       return {
         allowLogin: false,
         error: 'Please fill in all the fields.',
+        code: 400,
       }
     }
   }

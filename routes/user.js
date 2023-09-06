@@ -7,7 +7,7 @@ const controller = new UserController()
 
 const errorCatcher = (error, res, statusCode = 500) => {
   console.error(error)
-  res.status(statusCode).send(new Error(error))
+  res.status(statusCode).send(error)
 }
 
 router.get('/session', async (req, res) => {
