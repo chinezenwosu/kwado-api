@@ -1,5 +1,6 @@
 import express from 'express'
 import KwadocController from '../controllers/Kwadoc.js'
+import { isLoggedIn } from '../middlewares/auth.js'
 
 const router = express.Router()
 const controller = new KwadocController()
@@ -7,7 +8,6 @@ const controller = new KwadocController()
 const errorCatcher = function(inputError, res) {
   console.error(inputError)
   res.status(500)
-  res.json({ status: 500, error: inputError })
 }
 
 router.get('/', async (req, res) => {
@@ -20,11 +20,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', isLoggedIn, async (req, res) => {
   const id = req.params.id
 
   try {
-    const kwadoc = await controller.getKwadocByID(id)
+    const kwadoc = await controller.getKwadocById(id)
     res.json(kwadoc)
   }
   catch(e) {

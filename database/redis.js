@@ -12,4 +12,4 @@ redis.on('error', (err) => {
 
 await redis.connect()
 
-export { redis }
+export default redis

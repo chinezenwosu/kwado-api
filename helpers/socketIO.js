@@ -1,4 +1,4 @@
-import { redis } from '../database/redis.js'
+import redis from '../database/redis.js'
 import { getDocumentHash } from '../utils.js'
 import KwadocController from '../controllers/Kwadoc.js'
 
@@ -8,12 +8,13 @@ const onDocumentLoad = async pathname => {
 
   try {
     let document =  await redis.hGet(getDocumentHash(key), 'content');
+
     if (document) {
       return JSON.parse(document)
     }
 
     const controller = new KwadocController()
-    document = await controller.getKwadocByID(key)
+    document = await controller.getKwadocBy('slug', key)
     return document.content
   }
   catch(e) {

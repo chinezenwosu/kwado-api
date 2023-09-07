@@ -7,8 +7,8 @@ const kwadocSchema = new Schema({
   published: Boolean,
   author: String,
   content: Array,
-  createdAt: Date,
-  updatedAt: Date,
+}, {
+  timestamps: true,
 })
 
 const Kwadoc = model('Kwadoc', kwadocSchema)
