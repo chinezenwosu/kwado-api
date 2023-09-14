@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt'
-import User from '../models/User.js'
+const bcrypt = require('bcrypt')
+const User = require('../models/User.js')
 
 const handleError = (e) => {
   return {
@@ -104,4 +104,4 @@ class UserController {
   }
 }
 
-export default UserController
+module.exports = UserController

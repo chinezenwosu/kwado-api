@@ -1,6 +1,6 @@
-import cron from 'node-cron'
-import { DOCUMENT_PREFIX, getDocumentHash } from '../utils.js'
-import KwadocController from '../controllers/Kwadoc.js'
+const cron = require('node-cron')
+const KwadocController = require('../controllers/Kwadoc.js')
+const { getDocumentHash, DOCUMENT_PREFIX } = require('../utils.js')
 
 const scheduleRedisCron = (redis) => {
   cron.schedule("* */5 * * * *", async () => {
@@ -52,4 +52,4 @@ const scheduleRedisCron = (redis) => {
   })
 }
 
-export { scheduleRedisCron }
+exports.scheduleRedisCron = scheduleRedisCron 

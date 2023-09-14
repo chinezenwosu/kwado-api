@@ -1,5 +1,4 @@
-import mongoose from 'mongoose'
-const { Schema, model } = mongoose
+const { Schema, model } = require('mongoose')
 
 const kwadocSchema = new Schema({
   title: String,

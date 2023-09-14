@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import { config } from '../config.js'
+const mongoose = require('mongoose')
+const config = require('../config.js')
 
 const connectMongo = () => {
   mongoose.connect(`${config.mongodb.url}/${config.mongodb.name}`, {
@@ -14,4 +14,4 @@ const connectMongo = () => {
   })
 }
 
-export { connectMongo }
+exports.connectMongo = connectMongo

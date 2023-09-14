@@ -1,6 +1,6 @@
-import express from 'express'
-import KwadocController from '../controllers/Kwadoc.js'
-import { isLoggedIn } from '../middlewares/auth.js'
+const express = require('express')
+const KwadocController = require('../controllers/Kwadoc.js')
+const { isLoggedIn } = require('../middlewares/auth.js')
 
 const router = express.Router()
 const controller = new KwadocController()
