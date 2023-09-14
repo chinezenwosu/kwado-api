@@ -20,11 +20,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', isLoggedIn, async (req, res) => {
-  const id = req.params.id
-
+router.get('/:slug', isLoggedIn, async (req, res) => {
+  const slug = req.params.slug
+  
   try {
-    const kwadoc = await controller.getKwadocById(id)
+    const kwadoc = await controller.getKwadocBy('slug', slug)
     res.json(kwadoc)
   }
   catch(e) {
@@ -44,8 +44,8 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
-  const newData = req.body
+router.post('/', isLoggedIn, async (req, res) => {
+  const newData = { ...{ author: req.session.user }, ...req.body }
 
   try {
     const kwadoc = await controller.createKwadoc(newData)
@@ -69,4 +69,4 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-export default router
+module.exports = router

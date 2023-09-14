@@ -38,7 +38,7 @@ class KwadocController {
 
   async getKwadocBy (prop, value) {
     try {
-      const kwadoc = await Kwadoc.findOne({ [prop]: value })
+      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate('users.$*.user')
       return kwadoc
     }
     catch (e) {
