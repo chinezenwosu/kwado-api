@@ -8,7 +8,9 @@ const cookieParser = require('cookie-parser')
 const { connectMongo } = require('./database/mongo.js')
 const { scheduleRedisCron } = require('./cron/redis.js')
 const { getSessionStore } = require('./database/session.js')
-const { wss, setUpWebsocketProvider } = require('./helpers/socketIO.js')
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+const { setUpWebsocketProvider } = require('./helpers/socket.js')
 
 const app = express()
 
@@ -29,15 +31,13 @@ app.use(cookieParser(config.session.secret))
 app.use(getSessionStore(redis))
 app.use('/api', routes)
 
-const server = app.listen(config.url.port, () => {
-  console.log(`Kwado is running at ${config.url.domain}`)
+const httpServer = createServer(app)
+const io = new Server(httpServer, {
+  cors: corsOptions,
 })
 
-setUpWebsocketProvider()
+setUpWebsocketProvider(io)
 
-server.on('upgrade', (request, socket, head) => {
-  const handleAuth = ws => {
-    wss.emit('connection', ws, request)
-  }
-  wss.handleUpgrade(request, socket, head, handleAuth)
+httpServer.listen(config.url.port, () => {
+  console.log(`Kwado is running at ${config.url.domain}`)
 })

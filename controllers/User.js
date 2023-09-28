@@ -69,13 +69,13 @@ class UserController {
         const existingUser = await User.findOne({ email })
   
         if (!existingUser) {
-          const hashedPassword = bcrypt.hashSync(password, 10);
+          const hashedPassword = bcrypt.hashSync(password, 10)
           const newUser = new User({
               firstName,
               lastName,
               email,
               password: hashedPassword,
-          });
+          })
   
           const user = await newUser.save()
   

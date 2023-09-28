@@ -17,7 +17,7 @@ const scheduleRedisCron = (redis) => {
       let document
   
       try {
-        document =  await redis.hGetAll(key);
+        document =  await redis.hGetAll(key)
       }
       catch(e) {
         console.log('Error get value from hash', e)
@@ -36,7 +36,8 @@ const scheduleRedisCron = (redis) => {
           console.log('Document load error', e)
         }
   
-        const KeepAliveTime =  10000 // in milliseconds
+        const ONE_HOUR = 1000 * 60 * 60 // in milliseconds
+        const KeepAliveTime =  ONE_HOUR
         const currentTime = Date.now()
         
         if (currentTime - document.updatedAt > KeepAliveTime) {

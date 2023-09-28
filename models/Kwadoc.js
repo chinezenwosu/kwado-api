@@ -14,7 +14,7 @@ const kwadocSchema = new Schema({
     unique: true,
     index: true,
   },
-  content: Array,
+  content: Map,
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
