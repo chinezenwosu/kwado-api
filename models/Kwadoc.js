@@ -15,6 +15,7 @@ const kwadocSchema = new Schema({
     index: true,
   },
   content: Map,
+  html: String,
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
