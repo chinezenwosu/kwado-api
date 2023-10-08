@@ -10,7 +10,7 @@ const { scheduleRedisCron } = require('./cron/redis.js')
 const { getSessionStore } = require('./database/session.js')
 const { createServer } = require('http')
 const { Server } = require('socket.io')
-const { setUpWebsocketProvider } = require('./helpers/socket.js')
+const SocketProvider = require('./lib/socket.js')
 
 const app = express()
 
@@ -36,7 +36,7 @@ const io = new Server(httpServer, {
   cors: corsOptions,
 })
 
-setUpWebsocketProvider(io)
+SocketProvider.setUp(io)
 
 httpServer.listen(config.url.port, () => {
   console.log(`Kwado is running at ${config.url.domain}`)
