@@ -18,6 +18,7 @@ const getSessionStore = (redis) => {
       // Session max age in milliseconds. (1 min)
       // Calculates the Expires Set-Cookie attribute
       maxAge: config.session.maxAge,
+      sameSite: config.env.isProduction && 'none',
     }
   })
 }
