@@ -1,6 +1,7 @@
 const { createClient } = require('redis')
+const config = require('../config')
 
-const redis = createClient()
+const redis = createClient({ url: config.redis.url })
   
 redis.on('connect', () => {
   console.log('Connected to Redis')
