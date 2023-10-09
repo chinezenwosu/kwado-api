@@ -1,6 +1,6 @@
-import session from 'express-session'
-import RedisStore from 'connect-redis'
-import { config } from '../config.js'
+const session = require('express-session')
+const RedisStore = require('connect-redis').default
+const config = require('../config.js')
 
 const getSessionStore = (redis) => {
   return session({
@@ -22,4 +22,4 @@ const getSessionStore = (redis) => {
   })
 }
 
-export { getSessionStore }
+exports.getSessionStore = getSessionStore

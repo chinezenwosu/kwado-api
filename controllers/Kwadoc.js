@@ -1,4 +1,4 @@
-import Kwadoc from '../models/Kwadoc.js'
+const Kwadoc = require('../models/Kwadoc.js')
 
 const handleError = (e) => {
   throw new Error(e)
@@ -38,7 +38,7 @@ class KwadocController {
 
   async getKwadocBy (prop, value) {
     try {
-      const kwadoc = await Kwadoc.findOne({ [prop]: value })
+      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate('users.$*.user')
       return kwadoc
     }
     catch (e) {
@@ -77,4 +77,4 @@ class KwadocController {
   }
 }
 
-export default KwadocController
+module.exports = KwadocController

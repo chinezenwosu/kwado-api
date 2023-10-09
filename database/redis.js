@@ -1,15 +1,15 @@
-import { createClient as redisClient } from 'redis'
+const { createClient } = require('redis')
 
-const redis = redisClient()
-
+const redis = createClient()
+  
 redis.on('connect', () => {
-  console.log('connected to Redis')
+  console.log('Connected to Redis')
 })
 
 redis.on('error', (err) => {
   console.log('Redis client Error', err)
 })
 
-await redis.connect()
+redis.connect()
 
-export default redis
+module.exports = redis

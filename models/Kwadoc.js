@@ -1,15 +1,50 @@
-import mongoose from 'mongoose'
-const { Schema, model } = mongoose
+const { Schema, model } = require('mongoose')
+
+const userRole = {
+  ADMIN: 0,
+  EDITOR: 1,
+  VIEWER: 2,
+}
 
 const kwadocSchema = new Schema({
   title: String,
-  slug: String,
-  published: Boolean,
-  author: String,
-  content: Array,
+  slug: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+  },
+  content: Map,
+  html: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  publishedAt: Date,
+  tags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Tag',
+    }
+  ],
+  users: {
+    type: Map,
+    of: new Schema({
+      role: {
+        type: Number,
+        enum: Object.values(userRole),
+        default: userRole.VIEWER,
+      },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      }
+    })
+  }
 }, {
   timestamps: true,
 })
 
 const Kwadoc = model('Kwadoc', kwadocSchema)
-export default Kwadoc
+module.exports = Kwadoc

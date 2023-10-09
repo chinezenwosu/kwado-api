@@ -16,4 +16,6 @@ const stripModel = (model, includeTimestamps = false) => {
   return model
 }
 
-export { DOCUMENT_PREFIX, getDocumentHash, stripModel }
+exports.DOCUMENT_PREFIX = DOCUMENT_PREFIX
+exports.getDocumentHash = getDocumentHash
+exports.stripModel = stripModel

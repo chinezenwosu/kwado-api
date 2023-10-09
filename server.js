@@ -1,19 +1,16 @@
-import 'dotenv/config'
-import express from 'express'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import { SocketIOConnection } from '@slate-collaborative/backend'
-import routes from './routes/index.js'
-import redis from './database/redis.js'
-import { scheduleRedisCron } from './cron/redis.js'
-import { connectMongo } from './database/mongo.js'
-import { getSessionStore } from './database/session.js'
-import { config } from './config.js'
-import {
-  onDocumentLoad,
-  onDocumentSave,
-  onAuthRequest
-} from './helpers/socketIO.js'
+require('dotenv/config')
+const cors = require('cors')
+const express = require('express')
+const config = require('./config.js')
+const routes = require('./routes/index.js')
+const redis = require('./database/redis.js')
+const cookieParser = require('cookie-parser')
+const { connectMongo } = require('./database/mongo.js')
+const { scheduleRedisCron } = require('./cron/redis.js')
+const { getSessionStore } = require('./database/session.js')
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+const SocketProvider = require('./lib/socket.js')
 
 const app = express()
 
@@ -21,7 +18,7 @@ scheduleRedisCron(redis)
 connectMongo()
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  origin: config.url.cors,
   credentials: true,
   optionSuccessStatus: 200,
   methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
@@ -34,18 +31,13 @@ app.use(cookieParser(config.session.secret))
 app.use(getSessionStore(redis))
 app.use('/api', routes)
 
-const server = app.listen(process.env.PORT, () => {
-  console.log(`Kwado is running at localhost:${process.env.PORT}`)
+const httpServer = createServer(app)
+const io = new Server(httpServer, {
+  cors: corsOptions,
 })
 
-const socketIoConfig = {
-  entry: server, // or specify port to start io server
-  defaultValue: [],
-  saveFrequency: 2000,
-  onAuthRequest,
-  onDocumentLoad: async (pathname) => await onDocumentLoad(pathname),
-  onDocumentSave: async (pathname, doc) => await onDocumentSave(pathname, doc),
-}
+SocketProvider.setUp(io)
 
-new SocketIOConnection(socketIoConfig)
-
+httpServer.listen(config.url.port, () => {
+  console.log(`Kwado is running at ${config.url.domain}`)
+})

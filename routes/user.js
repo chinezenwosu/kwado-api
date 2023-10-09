@@ -1,6 +1,6 @@
-import express from 'express'
-import UserController from '../controllers/User.js'
-import { stripModel } from '../utils.js'
+const express = require('express')
+const UserController = require('../controllers/User.js')
+const { stripModel } = require('../utils.js')
 
 const router = express.Router()
 const controller = new UserController()
@@ -92,4 +92,4 @@ router.post('/logout', async (req, res) => {
   })
 })
 
-export default router
+module.exports = router

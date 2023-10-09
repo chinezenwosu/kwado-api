@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt'
-import User from '../models/User.js'
+const bcrypt = require('bcrypt')
+const User = require('../models/User.js')
 
 const handleError = (e) => {
   return {
@@ -69,13 +69,13 @@ class UserController {
         const existingUser = await User.findOne({ email })
   
         if (!existingUser) {
-          const hashedPassword = bcrypt.hashSync(password, 10);
+          const hashedPassword = bcrypt.hashSync(password, 10)
           const newUser = new User({
               firstName,
               lastName,
               email,
               password: hashedPassword,
-          });
+          })
   
           const user = await newUser.save()
   
@@ -104,4 +104,4 @@ class UserController {
   }
 }
 
-export default UserController
+module.exports = UserController
