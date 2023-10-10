@@ -17,6 +17,9 @@ const config = {
     port: process.env.PORT,
     domain: `${process.env.HOST}:${process.env.PORT}`,
     cors: process.env.CORS_ORIGIN.split(','),
+  },
+  redis: {
+    url: process.env.REDIS_URL,
   }
 }
 
