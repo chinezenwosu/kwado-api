@@ -11,6 +11,7 @@ const { getSessionStore } = require('./database/session.js')
 const { createServer } = require('http')
 const { Server } = require('socket.io')
 const SocketProvider = require('./lib/socket.js')
+const { verifyClient } = require('./middlewares/clientHeader.js')
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(config.session.secret))
 app.use(getSessionStore(redis))
+app.use(verifyClient)
 app.use('/api', routes)
 
 const httpServer = createServer(app)
