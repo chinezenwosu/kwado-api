@@ -15,8 +15,9 @@ const { verifyClient } = require('./middlewares/clientHeader.js')
 
 const app = express()
 
-scheduleRedisCron(redis)
 connectMongo()
+scheduleRedisCron(redis)
+const sessionMiddleware = getSessionStore(redis)
 
 const corsOptions = {
   origin: config.url.cors,
@@ -30,7 +31,7 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(config.session.secret))
-app.use(getSessionStore(redis))
+app.use(sessionMiddleware)
 app.use(verifyClient)
 app.use('/api', routes)
 
@@ -38,6 +39,7 @@ const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: corsOptions,
 })
+io.engine.use(sessionMiddleware)
 
 SocketProvider.setUp(io)
 
