@@ -1,6 +1,6 @@
 const express = require('express')
 const UserController = require('../controllers/User.js')
-const { stripModel } = require('../utils.js')
+const { stripModel } = require('../utils/database.js')
 
 const router = express.Router()
 const controller = new UserController()
