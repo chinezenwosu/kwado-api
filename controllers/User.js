@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const User = require('../models/User.js')
+const BaseController = require('./index.js')
 
 const handleError = (e) => {
   return {
@@ -8,15 +9,26 @@ const handleError = (e) => {
   }
 }
 
-class UserController {
-  async getUserById (id) {
+class UserController extends BaseController {
+  async getUserById (id, populations) {
     try {
-      const user = await User.findById(id)
-      return { user }
+      return await User.findById(id).populate(populations)
     }
     catch (e) {
-      handleError(e)
+      return handleError(e)
     }
+  }
+
+  async addKwadocToUser(id, kwadoc) {
+    return User.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          kwadocs: kwadoc,
+        }
+      },
+      { new: true, useFindAndModify: false }
+    )
   }
 
   async verifyLoginCredentials ({ email, password }) {
@@ -50,7 +62,7 @@ class UserController {
         }
       }
       catch (e) {
-        handleError(e)
+        return handleError(e)
       }
     } else {
       return {
@@ -71,10 +83,10 @@ class UserController {
         if (!existingUser) {
           const hashedPassword = bcrypt.hashSync(password, 10)
           const newUser = new User({
-              firstName,
-              lastName,
-              email,
-              password: hashedPassword,
+            firstName,
+            lastName,
+            email,
+            password: hashedPassword,
           })
   
           const user = await newUser.save()
@@ -92,7 +104,7 @@ class UserController {
         }
       }
       catch (e) {
-        handleError(e)
+        return handleError(e)
       }
     } else {
       return {

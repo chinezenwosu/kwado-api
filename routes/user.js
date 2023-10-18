@@ -12,7 +12,7 @@ const errorCatcher = (error, res, statusCode = 500) => {
 
 router.get('/session', async (req, res) => {
   if (req.session.user) { 
-    let { user } = await controller.getUserById(req.session.user)
+    let user = await controller.getUserById(req.session.user)
 
     if (user) {
       res.json({
