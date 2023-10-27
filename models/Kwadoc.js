@@ -28,23 +28,21 @@ const kwadocSchema = new Schema({
       ref: 'Tag',
     }
   ],
-  users: {
-    type: Map,
-    of: new Schema({
-      role: {
-        type: Number,
-        enum: Object.values(userRole),
-        default: userRole.VIEWER,
-      },
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      }
-    })
-  }
+  users: [{
+    role: {
+      type: Number,
+      enum: Object.values(userRole),
+      default: userRole.VIEWER,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  }],
 }, {
   timestamps: true,
 })
 
 const Kwadoc = model('Kwadoc', kwadocSchema)
+Kwadoc.userRoles = userRole
 module.exports = Kwadoc

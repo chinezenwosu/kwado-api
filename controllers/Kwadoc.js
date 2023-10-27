@@ -1,10 +1,11 @@
 const Kwadoc = require('../models/Kwadoc.js')
+const BaseController = require('./index.js')
 
 const handleError = (e) => {
   throw new Error(e)
 }
 
-class KwadocController {
+class KwadocController extends BaseController {
   async createKwadoc (data) {
     try {
       let newKwadoc = new Kwadoc(data)
@@ -14,6 +15,20 @@ class KwadocController {
     catch (e) {
       handleError(e)
     }
+  }
+
+  async addUserToKwadoc(kwadoc, userId, role) {
+    return kwadoc.updateOne(
+      {
+        $push: {
+          users: {
+            role,
+            user: userId
+          },
+        }
+      },
+      { new: true, useFindAndModify: false }
+    );
   }
 
   async getKwadocs () {
@@ -38,7 +53,7 @@ class KwadocController {
 
   async getKwadocBy (prop, value) {
     try {
-      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate('users.$*.user')
+      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate('users.0.user')
       return kwadoc
     }
     catch (e) {

@@ -1,6 +1,6 @@
 const cron = require('node-cron')
 const KwadocController = require('../controllers/Kwadoc.js')
-const { getDocumentHash, DOCUMENT_PREFIX } = require('../utils.js')
+const { getDocumentHash, DOCUMENT_PREFIX } = require('../utils/document.js')
 const sanitize = require('sanitize-html')
 const { QuillDeltaToHtmlConverter } = require('quill-delta-to-html')
 

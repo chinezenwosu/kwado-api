@@ -20,6 +20,9 @@ const config = {
   },
   redis: {
     url: process.env.REDIS_URL,
+  },
+  headers: {
+    client: process.env.CLIENT_HEADER,
   }
 }
 

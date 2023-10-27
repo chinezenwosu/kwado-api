@@ -1,6 +1,6 @@
 const express = require('express')
 const UserController = require('../controllers/User.js')
-const { stripModel } = require('../utils.js')
+const { stripModel } = require('../utils/database.js')
 
 const router = express.Router()
 const controller = new UserController()
@@ -12,7 +12,7 @@ const errorCatcher = (error, res, statusCode = 500) => {
 
 router.get('/session', async (req, res) => {
   if (req.session.user) { 
-    let { user } = await controller.getUserById(req.session.user)
+    let user = await controller.getUserById(req.session.user)
 
     if (user) {
       res.json({

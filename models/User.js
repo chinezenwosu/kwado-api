@@ -27,6 +27,10 @@ const userSchema = new Schema({
     required: [true, 'Password is required'],
     select: false,
   },
+  kwadocs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Kwadoc',
+  }]
 }, {
   timestamps: true,
 })
