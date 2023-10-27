@@ -10,11 +10,10 @@ const handleError = (e) => {
 }
 
 class UserController extends BaseController {
-  async getUserById (id, populations) {
+  async getUserById(id, populations) {
     try {
       return await User.findById(id).populate(populations)
-    }
-    catch (e) {
+    } catch (e) {
       return handleError(e)
     }
   }
@@ -25,20 +24,20 @@ class UserController extends BaseController {
       {
         $push: {
           kwadocs: kwadoc,
-        }
+        },
       },
-      { new: true, useFindAndModify: false }
+      { new: true, useFindAndModify: false },
     )
   }
 
-  async verifyLoginCredentials ({ email, password }) {
-    if (email && password) { 
+  async verifyLoginCredentials({ email, password }) {
+    if (email && password) {
       try {
         const existingUser = await User.findOne({ email }).select('password')
-  
+
         if (existingUser) {
           const match = await bcrypt.compare(password, existingUser.password)
-  
+
           if (match) {
             return {
               allowLogin: match,
@@ -60,8 +59,7 @@ class UserController extends BaseController {
           error: 'Invalid email or password',
           code: 400,
         }
-      }
-      catch (e) {
+      } catch (e) {
         return handleError(e)
       }
     } else {
@@ -73,13 +71,13 @@ class UserController extends BaseController {
     }
   }
 
-  async signUp (userData) {
+  async signUp(userData) {
     const { firstName, lastName, email, password } = userData
-  
+
     if (firstName && lastName && email && password) {
       try {
         const existingUser = await User.findOne({ email })
-  
+
         if (!existingUser) {
           const hashedPassword = bcrypt.hashSync(password, 10)
           const newUser = new User({
@@ -88,9 +86,9 @@ class UserController extends BaseController {
             email,
             password: hashedPassword,
           })
-  
+
           const user = await newUser.save()
-  
+
           return {
             allowLogin: true,
             user,
@@ -102,8 +100,7 @@ class UserController extends BaseController {
             code: 409,
           }
         }
-      }
-      catch (e) {
+      } catch (e) {
         return handleError(e)
       }
     } else {

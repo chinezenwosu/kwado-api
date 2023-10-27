@@ -6,7 +6,7 @@ const config = {
   session: {
     name: process.env.SESSION_NAME,
     secret: process.env.SESSION_SECRET,
-    maxAge: 1000 * 60  * 60 * 24 * 30, // 30 days
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
   },
   env: {
     isProduction: process.env.NODE_ENV === 'production',
@@ -23,7 +23,7 @@ const config = {
   },
   headers: {
     client: process.env.CLIENT_HEADER,
-  }
+  },
 }
 
 module.exports = config

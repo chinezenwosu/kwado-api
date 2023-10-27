@@ -1,4 +1,4 @@
-const config = require("../config")
+const config = require('../config')
 
 const verifyClient = function (req, res, next) {
   if (!req.header(config.headers.client)) {

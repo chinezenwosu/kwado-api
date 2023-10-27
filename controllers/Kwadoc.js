@@ -6,13 +6,12 @@ const handleError = (e) => {
 }
 
 class KwadocController extends BaseController {
-  async createKwadoc (data) {
+  async createKwadoc(data) {
     try {
       let newKwadoc = new Kwadoc(data)
       const kwadoc = await newKwadoc.save()
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
@@ -23,70 +22,66 @@ class KwadocController extends BaseController {
         $push: {
           users: {
             role,
-            user: userId
+            user: userId,
           },
-        }
+        },
       },
-      { new: true, useFindAndModify: false }
-    );
+      { new: true, useFindAndModify: false },
+    )
   }
 
-  async getKwadocs () {
+  async getKwadocs() {
     try {
       const kwadocs = await Kwadoc.find({})
       return kwadocs
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
 
-  async getKwadocById (id) {
+  async getKwadocById(id) {
     try {
       const kwadoc = await Kwadoc.findById(id)
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
 
-  async getKwadocBy (prop, value) {
+  async getKwadocBy(prop, value) {
     try {
-      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate('users.0.user')
+      const kwadoc = await Kwadoc.findOne({ [prop]: value }).populate(
+        'users.0.user',
+      )
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
 
-  async updateKwadoc (id, data) {
+  async updateKwadoc(id, data) {
     try {
       const kwadoc = await Kwadoc.findOneAndUpdate({ _id: id }, { $set: data })
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
 
-  async updateKwadocWhere (condition, data) {
+  async updateKwadocWhere(condition, data) {
     try {
       const kwadoc = await Kwadoc.findOneAndUpdate(condition, { $set: data })
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }
 
-  async deleteKwadoc (id) {
+  async deleteKwadoc(id) {
     try {
       const kwadoc = await Kwadoc.deleteOne({ _id: id })
       return kwadoc
-    }
-    catch (e) {
+    } catch (e) {
       handleError(e)
     }
   }

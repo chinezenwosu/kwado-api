@@ -11,7 +11,7 @@ const errorCatcher = (error, res, statusCode = 500) => {
 }
 
 router.get('/session', async (req, res) => {
-  if (req.session.user) { 
+  if (req.session.user) {
     let user = await controller.getUserById(req.session.user)
 
     if (user) {
@@ -31,10 +31,11 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body
 
   try {
-    const { allowLogin, user, error, code } = await controller.verifyLoginCredentials({
-      email,
-      password,
-    })
+    const { allowLogin, user, error, code } =
+      await controller.verifyLoginCredentials({
+        email,
+        password,
+      })
 
     if (allowLogin) {
       req.session.user = user._id
@@ -48,8 +49,7 @@ router.post('/login', async (req, res) => {
     } else {
       errorCatcher(error, res, code)
     }
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res, e.statusCode)
   }
 })
@@ -77,8 +77,7 @@ router.post('/signup', async (req, res) => {
     } else {
       errorCatcher(error, res, code)
     }
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res, e.statusCode)
   }
 })

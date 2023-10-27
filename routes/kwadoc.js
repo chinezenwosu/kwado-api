@@ -8,7 +8,7 @@ const router = express.Router()
 const controller = new KwadocController()
 const userController = new UserController()
 
-const errorCatcher = function(inputError, res) {
+const errorCatcher = function (inputError, res) {
   console.error(inputError)
   res.status(500)
 }
@@ -20,20 +20,18 @@ router.get('/', async (req, res) => {
       options: { sort: { updatedAt: -1 } },
     })
     res.json(user.kwadocs)
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res)
   }
 })
 
 router.get('/:slug', isLoggedIn, async (req, res) => {
   const slug = req.params.slug
-  
+
   try {
     const kwadoc = await controller.getKwadocBy('slug', slug)
     res.json(kwadoc)
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res)
   }
 })
@@ -44,8 +42,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const kwadoc = await controller.deleteKwadoc(id)
     res.json(kwadoc)
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res)
   }
 })
@@ -62,8 +59,7 @@ router.post('/', isLoggedIn, async (req, res) => {
       await userController.addKwadocToUser(userId, kwadoc)
       res.json(kwadoc)
     })
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res)
   }
 })
@@ -75,8 +71,7 @@ router.put('/:id', async (req, res) => {
   try {
     const kwadoc = await controller.updateKwadoc(id, updatedData)
     res.json(kwadoc)
-  }
-  catch(e) {
+  } catch (e) {
     errorCatcher(e, res)
   }
 })

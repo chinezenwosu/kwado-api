@@ -1,16 +1,16 @@
 const debounce = {
   isWaiting: false,
-  
+
   submit: function (func, timeout = 1000) {
     if (!this.isWaiting) {
       this.isWaiting = true
-      
+
       setTimeout(() => {
         func.apply()
         this.isWaiting = false
       }, timeout)
     }
-  }
+  },
 }
 
 const debounceDelay = {
@@ -18,15 +18,15 @@ const debounceDelay = {
 
   submit: function (func, timeout = 1000) {
     this.cancel()
-    
+
     this.timerId = setTimeout(() => {
       func.apply(this)
     }, timeout)
   },
-  
-  cancel: function() {
+
+  cancel: function () {
     clearTimeout(this.timerId)
-  }
+  },
 }
 
 exports.debounce = debounce
