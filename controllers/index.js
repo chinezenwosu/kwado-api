@@ -1,15 +1,15 @@
 const { startSession } = require('mongoose')
 
 class BaseController {
-  async transaction(transactionCallback) {
-    const session = await startSession()
-    session.startTransaction()
+	async transaction(transactionCallback) {
+		const session = await startSession()
+		session.startTransaction()
 
-    await transactionCallback()
+		await transactionCallback()
 
-    session.commitTransaction()
-    session.endSession()
-  }
+		session.commitTransaction()
+		session.endSession()
+	}
 }
 
 module.exports = BaseController
