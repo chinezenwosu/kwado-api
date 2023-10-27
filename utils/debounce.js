@@ -1,32 +1,32 @@
 const debounce = {
-	isWaiting: false,
+  isWaiting: false,
 
-	submit: function (func, timeout = 1000) {
-		if (!this.isWaiting) {
-			this.isWaiting = true
+  submit: function (func, timeout = 1000) {
+    if (!this.isWaiting) {
+      this.isWaiting = true
 
-			setTimeout(() => {
-				func.apply()
-				this.isWaiting = false
-			}, timeout)
-		}
-	},
+      setTimeout(() => {
+        func.apply()
+        this.isWaiting = false
+      }, timeout)
+    }
+  },
 }
 
 const debounceDelay = {
-	timerId: 0,
+  timerId: 0,
 
-	submit: function (func, timeout = 1000) {
-		this.cancel()
+  submit: function (func, timeout = 1000) {
+    this.cancel()
 
-		this.timerId = setTimeout(() => {
-			func.apply(this)
-		}, timeout)
-	},
+    this.timerId = setTimeout(() => {
+      func.apply(this)
+    }, timeout)
+  },
 
-	cancel: function () {
-		clearTimeout(this.timerId)
-	},
+  cancel: function () {
+    clearTimeout(this.timerId)
+  },
 }
 
 exports.debounce = debounce

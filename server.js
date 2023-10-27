@@ -20,10 +20,10 @@ scheduleRedisCron(redis)
 const sessionMiddleware = getSessionStore(redis)
 
 const corsOptions = {
-	origin: config.url.cors,
-	credentials: true,
-	optionSuccessStatus: 200,
-	methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+  origin: config.url.cors,
+  credentials: true,
+  optionSuccessStatus: 200,
+  methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
 }
 
 app.set('trust proxy', 1)
@@ -37,12 +37,12 @@ app.use('/api', routes)
 
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
-	cors: corsOptions,
+  cors: corsOptions,
 })
 io.engine.use(sessionMiddleware)
 
 SocketProvider.setUp(io)
 
 httpServer.listen(config.url.port, () => {
-	console.log(`Kwado is running at ${config.url.domain}`)
+  console.log(`Kwado is running at ${config.url.domain}`)
 })
