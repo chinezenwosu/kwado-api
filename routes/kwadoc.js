@@ -15,7 +15,10 @@ const errorCatcher = function(inputError, res) {
 
 router.get('/', async (req, res) => {
   try {
-    const user = await userController.getUserById(req.session.user, ['kwadocs'])
+    const user = await userController.getUserById(req.session.user, {
+      path: 'kwadocs',
+      options: { sort: { updatedAt: -1 } },
+    })
     res.json(user.kwadocs)
   }
   catch(e) {
